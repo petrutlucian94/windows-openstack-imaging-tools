@@ -69,6 +69,12 @@ try
             throw "Installing $CloudbaseInitMsiPath failed. Log: $CloudbaseInitMsiLog"
         }
 
+        $Host.UI.RawUI.WindowTitle = "Prepairing image for Openstack Cinder..."
+        $CinderPrepScriptPath = "$ENV:Temp\PrepCinderNode.ps1"
+        $CinderPrepScriptUrl = "https://raw.githubusercontent.com/petrutlucian94/windows-openstack-imaging-tools/master/PrepCinderNode.ps1"
+        (new-object System.Net.WebClient).DownloadFile($CinderPrepScriptUrl, $CinderPrepScriptPath)
+        & $CinderPrepScriptPath
+
          # We're done, remove LogonScript and disable AutoLogon
         Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -Name Unattend*
         Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name AutoLogonCount
